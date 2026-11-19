@@ -1,11 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 
-<!-- QUÉ SE VA A HACER AQUÍ: Seleccionar lector; campo ScannerField: cada código leído agrega el ejemplar a la lista; botón Confirmar -> POST /api/prestamos (transacción en BD). Mostrar fecha de vencimiento. -->
-<!-- Solo estructura. Colores, tamaños y formas se definen en css/estilos.css -->
-<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-            fx:controller="sissepbook.frontend.controller.PrestamoController">
-    <top><Label text="PrestamoView"/></top>
-    <center><VBox><!-- TODO: componentes según Figma --></VBox></center>
-</BorderPane>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="sissepbook.frontend.controller.PrestamoController" spacing="16" styleClass="contenido">
+    <padding><Insets top="24" right="24" bottom="24" left="24"/></padding>
+    <HBox spacing="16">
+        <VBox spacing="4" HBox.hgrow="ALWAYS">
+            <Label text="1. Lector (matrícula)" styleClass="etiqueta"/>
+            <TextField fx:id="txtMatricula" promptText="Escribir matrícula + ENTER" onAction="#onBuscarLector"/>
+            <Label fx:id="lblLector" text="Nombre del lector · Estado · Préstamos activos 0 / 0" styleClass="info-lector" wrapText="true"/>
+        </VBox>
+        <VBox spacing="4" HBox.hgrow="ALWAYS">
+            <Label text="2. Escanear código de barras" styleClass="etiqueta"/>
+            <TextField fx:id="txtCodigo" promptText="Lector USB → ENTER" styleClass="campo-escaner" onAction="#onEscanear"/>
+        </VBox>
+    </HBox>
+    <TableView fx:id="tblEjemplares" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="colCodigo" text="Código de barras"/>
+            <TableColumn fx:id="colTitulo" text="Título"/>
+            <TableColumn fx:id="colEstado" text="Estado"/>
+        </columns>
+        <columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
+    </TableView>
+    <HBox spacing="12" alignment="CENTER_LEFT">
+        <Label text="Días de préstamo:"/>
+        <Spinner fx:id="spnDias" editable="true"/>
+        <Label fx:id="lblVence" text="Vence: dd/mm/aaaa"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="Quitar seleccionado" onAction="#onQuitar"/>
+        <Button text="Cancelar" onAction="#onCancelar"/>
+        <Button text="Confirmar préstamo" styleClass="btn-primario" onAction="#onConfirmar"/>
+    </HBox>
+</VBox>

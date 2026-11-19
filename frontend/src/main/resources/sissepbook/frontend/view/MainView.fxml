@@ -1,11 +1,94 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 
-<!-- QUÉ SE VA A HACER AQUÍ: Menú principal: botones a cada módulo, filtrados por Permisos; cerrar sesión. -->
-<!-- Solo estructura. Colores, tamaños y formas se definen en css/estilos.css -->
-<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-            fx:controller="sissepbook.frontend.controller.MainController">
-    <top><Label text="MainView"/></top>
-    <center><VBox><!-- TODO: componentes según Figma --></VBox></center>
+
+<?import java.lang.String?>
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="sissepbook.frontend.controller.MainController" prefWidth="960" prefHeight="600">
+    <left>
+        <VBox styleClass="sidebar" prefWidth="210" spacing="0">
+            <Label text="[LOGO] Biblioteca" styleClass="sidebar-titulo"/>
+            <Button text="Inicio" maxWidth="Infinity" styleClass="nav-btn" onAction="#irModulo">
+                <userData><String fx:value=""/></userData>
+            </Button>
+            <Button text="Libros" maxWidth="Infinity" styleClass="nav-btn" onAction="#irModulo">
+                <userData><String fx:value="LibrosView"/></userData>
+            </Button>
+            <Button text="Ejemplares" maxWidth="Infinity" styleClass="nav-btn" onAction="#irModulo">
+                <userData><String fx:value="EjemplaresView"/></userData>
+            </Button>
+            <Button text="Lectores" maxWidth="Infinity" styleClass="nav-btn" onAction="#irModulo">
+                <userData><String fx:value="LectoresView"/></userData>
+            </Button>
+            <Button text="Préstamo" maxWidth="Infinity" styleClass="nav-btn" onAction="#irModulo">
+                <userData><String fx:value="PrestamoView"/></userData>
+            </Button>
+            <Button text="Devolución" maxWidth="Infinity" styleClass="nav-btn" onAction="#irModulo">
+                <userData><String fx:value="DevolucionView"/></userData>
+            </Button>
+            <Button text="Consulta por código" maxWidth="Infinity" styleClass="nav-btn" onAction="#irModulo">
+                <userData><String fx:value="ConsultaCodigoView"/></userData>
+            </Button>
+            <Button text="Reportes" maxWidth="Infinity" styleClass="nav-btn" onAction="#irModulo">
+                <userData><String fx:value="ReportesView"/></userData>
+            </Button>
+            <Button fx:id="btnUsuarios" text="Usuarios (ADMIN)" maxWidth="Infinity" styleClass="nav-btn" onAction="#irModulo">
+                <userData><String fx:value="UsuariosView"/></userData>
+            </Button>
+            <Button fx:id="btnBitacora" text="Bitácora (ADMIN)" maxWidth="Infinity" styleClass="nav-btn" onAction="#irModulo">
+                <userData><String fx:value="BitacoraView"/></userData>
+            </Button>
+            <Region VBox.vgrow="ALWAYS"/>
+            <Button text="Cerrar sesión" maxWidth="Infinity" styleClass="nav-btn" onAction="#onCerrarSesion"/>
+        </VBox>
+    </left>
+    <top>
+        <HBox styleClass="topbar" alignment="CENTER_LEFT">
+            <padding><Insets top="0" right="24" bottom="0" left="24"/></padding>
+            <Label fx:id="lblTitulo" text="Menú principal" styleClass="titulo"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label fx:id="lblUsuario" text="Nombre de usuario · ROL" styleClass="chip-usuario"/>
+        </HBox>
+    </top>
+    <center>
+        <StackPane fx:id="contentArea">
+            <GridPane fx:id="inicioPane" hgap="16" vgap="16" styleClass="inicio">
+                <padding><Insets top="24" right="24" bottom="24" left="24"/></padding>
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="33.3"/><ColumnConstraints percentWidth="33.3"/><ColumnConstraints percentWidth="33.3"/>
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints percentHeight="33.3"/><RowConstraints percentHeight="33.3"/><RowConstraints percentHeight="33.3"/>
+                </rowConstraints>
+                <Button text="Libros&#10;Todos" maxWidth="Infinity" maxHeight="Infinity" styleClass="card" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" onAction="#irModulo">
+                    <userData><String fx:value="LibrosView"/></userData>
+                </Button>
+                <Button text="Ejemplares&#10;Admin, Operador" maxWidth="Infinity" maxHeight="Infinity" styleClass="card" GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" onAction="#irModulo">
+                    <userData><String fx:value="EjemplaresView"/></userData>
+                </Button>
+                <Button text="Lectores&#10;Admin, Operador" maxWidth="Infinity" maxHeight="Infinity" styleClass="card" GridPane.columnIndex="2" GridPane.rowIndex="0" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" onAction="#irModulo">
+                    <userData><String fx:value="LectoresView"/></userData>
+                </Button>
+                <Button text="Préstamo&#10;Admin, Operador" maxWidth="Infinity" maxHeight="Infinity" styleClass="card" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" onAction="#irModulo">
+                    <userData><String fx:value="PrestamoView"/></userData>
+                </Button>
+                <Button text="Devolución&#10;Admin, Operador" maxWidth="Infinity" maxHeight="Infinity" styleClass="card" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" onAction="#irModulo">
+                    <userData><String fx:value="DevolucionView"/></userData>
+                </Button>
+                <Button text="Consulta por código&#10;Todos" maxWidth="Infinity" maxHeight="Infinity" styleClass="card" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" onAction="#irModulo">
+                    <userData><String fx:value="ConsultaCodigoView"/></userData>
+                </Button>
+                <Button text="Reportes&#10;Admin, Operador" maxWidth="Infinity" maxHeight="Infinity" styleClass="card" GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" onAction="#irModulo">
+                    <userData><String fx:value="ReportesView"/></userData>
+                </Button>
+                <Button fx:id="cardUsuarios" text="Usuarios&#10;Solo Admin" maxWidth="Infinity" maxHeight="Infinity" styleClass="card" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" onAction="#irModulo">
+                    <userData><String fx:value="UsuariosView"/></userData>
+                </Button>
+                <Button fx:id="cardBitacora" text="Bitácora&#10;Solo Admin" maxWidth="Infinity" maxHeight="Infinity" styleClass="card" GridPane.columnIndex="2" GridPane.rowIndex="2" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" onAction="#irModulo">
+                    <userData><String fx:value="BitacoraView"/></userData>
+                </Button>
+            </GridPane>
+        </StackPane>
+    </center>
 </BorderPane>

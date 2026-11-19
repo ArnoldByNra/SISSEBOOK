@@ -1,1 +1,25 @@
 /* QUÉ SE VA A HACER AQUÍ: colores, tamaños y formas del diseño. Vacío a propósito. */
+/* Solo nombres de clases para que ustedes pongan colores, tamaños y formas. Todo vacío a propósito.
+   Clases usadas en los FXML:
+   login-root login-card titulo subtitulo etiqueta error
+   sidebar sidebar-titulo nav-btn topbar chip-usuario inicio card
+   contenido panel-form info-lector campo-escaner btn-primario */
+
+.login-root {}
+.login-card {}
+.titulo {}
+.subtitulo {}
+.etiqueta {}
+.error {}
+.sidebar {}
+.sidebar-titulo {}
+.nav-btn {}
+.topbar {}
+.chip-usuario {}
+.inicio {}
+.card {}
+.contenido {}
+.panel-form {}
+.info-lector {}
+.campo-escaner {}
+.btn-primario {}

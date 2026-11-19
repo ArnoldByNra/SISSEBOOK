@@ -1,9 +1,12 @@
 package sissepbook.frontend.session;
 
-/**
- * QUÉ SE VA A HACER AQUÍ:
- * - Guardar token, nombre y rol del usuario logueado.
- * - cerrar() limpia todo.
- */
+/** Datos del usuario logueado. */
 public final class Sesion {
+    public static String token;
+    public static String nombre;
+    public static String rol; // ADMINISTRADOR | OPERADOR | CONSULTA
+
+    private Sesion() {}
+
+    public static void cerrar() { token = null; nombre = null; rol = null; }
 }

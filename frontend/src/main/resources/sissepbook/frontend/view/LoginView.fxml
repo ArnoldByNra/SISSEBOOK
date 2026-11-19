@@ -1,11 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 
-<!-- QUÉ SE VA A HACER AQUÍ: Leer usuario/contraseña, POST /api/auth/login, guardar Sesion, ir al menú. Mostrar error si falla. -->
-<!-- Solo estructura. Colores, tamaños y formas se definen en css/estilos.css -->
-<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-            fx:controller="sissepbook.frontend.controller.LoginController">
-    <top><Label text="LoginView"/></top>
-    <center><VBox><!-- TODO: componentes según Figma --></VBox></center>
-</BorderPane>
+
+<StackPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="sissepbook.frontend.controller.LoginController" prefWidth="960" prefHeight="600" styleClass="login-root">
+    <VBox styleClass="login-card" spacing="16" alignment="CENTER" maxWidth="380" maxHeight="-Infinity">
+        <padding><Insets top="32" right="32" bottom="32" left="32"/></padding>
+        <Label text="[LOGO] Biblioteca" styleClass="titulo"/>
+        <VBox spacing="4">
+            <Label text="Usuario" styleClass="etiqueta"/>
+            <TextField fx:id="txtUsuario" promptText="nombre_usuario"/>
+        </VBox>
+        <VBox spacing="4">
+            <Label text="Contraseña" styleClass="etiqueta"/>
+            <PasswordField fx:id="txtPassword" promptText="••••••••" onAction="#onLogin"/>
+        </VBox>
+        <Label fx:id="lblError" styleClass="error" visible="false" managed="false" wrapText="true"/>
+        <Button text="Iniciar sesión" maxWidth="Infinity" defaultButton="true" onAction="#onLogin" styleClass="btn-primario"/>
+    </VBox>
+</StackPane>

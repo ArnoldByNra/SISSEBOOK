@@ -1,11 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 
-<!-- QUÉ SE VA A HACER AQUÍ: Tabla de libros, búsqueda, formulario alta/edición/baja. -->
-<!-- Solo estructura. Colores, tamaños y formas se definen en css/estilos.css -->
-<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-            fx:controller="sissepbook.frontend.controller.LibrosController">
-    <top><Label text="LibrosView"/></top>
-    <center><VBox><!-- TODO: componentes según Figma --></VBox></center>
-</BorderPane>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="sissepbook.frontend.controller.LibrosController" spacing="16" styleClass="contenido">
+    <padding><Insets top="24" right="24" bottom="24" left="24"/></padding>
+    <HBox spacing="12">
+        <TextField fx:id="txtBuscar" promptText="Buscar por título, autor o ISBN" HBox.hgrow="ALWAYS" onAction="#onBuscar"/>
+        <Button text="Buscar" onAction="#onBuscar"/>
+        <Button text="+ Nuevo libro" styleClass="btn-primario" onAction="#onNuevo"/>
+    </HBox>
+    <HBox spacing="16" VBox.vgrow="ALWAYS">
+        <TableView fx:id="tblLibros" HBox.hgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colIsbn" text="ISBN"/>
+                <TableColumn fx:id="colTitulo" text="Título"/>
+                <TableColumn fx:id="colAutor" text="Autor"/>
+                <TableColumn fx:id="colDisp" text="Disp."/>
+            </columns>
+            <columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
+        </TableView>
+        <VBox spacing="10" prefWidth="260" styleClass="panel-form">
+            <padding><Insets top="16" right="16" bottom="16" left="16"/></padding>
+            <Label text="Datos del libro" styleClass="subtitulo"/>
+            <TextField fx:id="txtIsbn" promptText="ISBN"/>
+            <TextField fx:id="txtTitulo" promptText="Título"/>
+            <TextField fx:id="txtAutor" promptText="Autor"/>
+            <TextField fx:id="txtEditorial" promptText="Editorial"/>
+            <ComboBox fx:id="cmbCategoria" promptText="Categoría" maxWidth="Infinity"/>
+            <Region VBox.vgrow="ALWAYS"/>
+            <HBox spacing="8">
+                <Button text="Eliminar" onAction="#onEliminar"/>
+                <Button text="Guardar" maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="btn-primario" onAction="#onGuardar"/>
+            </HBox>
+        </VBox>
+    </HBox>
+</VBox>
