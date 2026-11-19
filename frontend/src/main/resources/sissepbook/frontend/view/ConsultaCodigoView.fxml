@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<!-- QUÉ SE VA A HACER AQUÍ: Campo ScannerField: al leer el código -> GET /api/ejemplares/codigo/{cb}; mostrar libro, estado, ubicación e historial. -->
+<!-- Solo estructura. Colores, tamaños y formas se definen en css/estilos.css -->
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="sissepbook.frontend.controller.ConsultaCodigoController">
+    <top><Label text="ConsultaCodigoView"/></top>
+    <center><VBox><!-- TODO: componentes según Figma --></VBox></center>
+</BorderPane>

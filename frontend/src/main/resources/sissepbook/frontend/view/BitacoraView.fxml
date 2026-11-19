@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<!-- QUÉ SE VA A HACER AQUÍ: Solo ADMIN: tabla de auditoría con filtros (tabla, usuario, fecha); ver info anterior/nueva. -->
+<!-- Solo estructura. Colores, tamaños y formas se definen en css/estilos.css -->
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="sissepbook.frontend.controller.BitacoraController">
+    <top><Label text="BitacoraView"/></top>
+    <center><VBox><!-- TODO: componentes según Figma --></VBox></center>
+</BorderPane>
