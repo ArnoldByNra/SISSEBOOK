@@ -1,11 +1,224 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<!-- QUÉ SE VA A HACER AQUÍ: Campo ScannerField: al leer el código -> POST /api/devoluciones; mostrar días de retraso y mensaje. -->
-<!-- Solo estructura. Colores, tamaños y formas se definen en css/estilos.css -->
-<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
             fx:controller="sissepbook.frontend.controller.DevolucionController">
-    <top><Label text="DevolucionView"/></top>
-    <center><VBox><!-- TODO: componentes según Figma --></VBox></center>
+
+    <!-- Encabezado -->
+    <top>
+        <HBox spacing="20" alignment="CENTER_LEFT">
+            <padding>
+                <Insets top="15" right="20" bottom="15" left="20"/>
+            </padding>
+
+            <VBox HBox.hgrow="ALWAYS">
+                <Label text="Devoluciones"/>
+                <Label text="Registra el regreso de cada libro a su siguiente historia."/>
+            </VBox>
+
+            <Button text="Ver historial"/>
+        </HBox>
+    </top>
+
+    <!-- Contenido -->
+    <center>
+        <VBox spacing="20">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <HBox spacing="20">
+
+                <!-- Panel izquierdo -->
+                <VBox spacing="15" HBox.hgrow="ALWAYS">
+
+                    <HBox>
+                        <Label text="Registrar devolución"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Label text="Recepción de ejemplar"/>
+                    </HBox>
+
+                    <!-- Scanner -->
+                    <Label text="01"/>
+                    <Label text="Identifica el préstamo"/>
+
+                    <Label text="Código de barras / ISBN"/>
+
+                    <HBox spacing="10">
+                        <TextField fx:id="txtCodigo"
+                                   promptText="Código del libro"/>
+
+                        <Button text="Escanear"
+                                onAction="#escanearLibro"/>
+                    </HBox>
+
+                    <!-- Libro -->
+                    <VBox spacing="5">
+
+                        <Label text="Título del libro"/>
+
+                        <Label text="Autor y editorial"/>
+
+                        <Label text="Préstamo #PRE-0001"/>
+
+                    </VBox>
+
+                    <Separator/>
+
+                    <!-- Lector -->
+                    <Label text="02"/>
+                    <Label text="Información del lector"/>
+
+                    <Label text="Nombre del lector"/>
+
+                    <Label text="Matrícula y carrera"/>
+
+                    <Separator/>
+
+                    <!-- Fechas -->
+                    <HBox spacing="15">
+
+                        <VBox spacing="5" HBox.hgrow="ALWAYS">
+                            <Label text="Fecha préstamo"/>
+                            <TextField fx:id="txtFechaPrestamo"
+                                       editable="false"/>
+                        </VBox>
+
+                        <VBox spacing="5" HBox.hgrow="ALWAYS">
+                            <Label text="Fecha límite"/>
+                            <TextField fx:id="txtFechaLimite"
+                                       editable="false"/>
+                        </VBox>
+
+                    </HBox>
+
+                    <HBox spacing="15">
+
+                        <VBox spacing="5" HBox.hgrow="ALWAYS">
+                            <Label text="Fecha devolución"/>
+                            <DatePicker fx:id="dpDevolucion"/>
+                        </VBox>
+
+                        <VBox spacing="5">
+                            <Label text="Estado"/>
+                            <Label fx:id="lblEstado"
+                                   text="Devuelto a tiempo"/>
+                        </VBox>
+
+                    </HBox>
+
+                </VBox>
+
+                <!-- Panel derecho -->
+                <VBox spacing="15"
+                      prefWidth="320">
+
+                    <Label text="Resumen de devolución"/>
+
+                    <Label text="Revisa la información antes de confirmar."/>
+
+                    <Separator/>
+
+                    <GridPane hgap="10"
+                              vgap="10">
+
+                        <Label text="Libro:"
+                               GridPane.rowIndex="0"
+                               GridPane.columnIndex="0"/>
+
+                        <Label fx:id="lblLibro"
+                               text="Título"
+                               GridPane.rowIndex="0"
+                               GridPane.columnIndex="1"/>
+
+                        <Label text="Lector:"
+                               GridPane.rowIndex="1"
+                               GridPane.columnIndex="0"/>
+
+                        <Label fx:id="lblLector"
+                               text="Nombre"
+                               GridPane.rowIndex="1"
+                               GridPane.columnIndex="1"/>
+
+                        <Label text="Ejemplares:"
+                               GridPane.rowIndex="2"
+                               GridPane.columnIndex="0"/>
+
+                        <Label text="1"
+                               GridPane.rowIndex="2"
+                               GridPane.columnIndex="1"/>
+
+                        <Label text="Fecha devolución:"
+                               GridPane.rowIndex="3"
+                               GridPane.columnIndex="0"/>
+
+                        <Label fx:id="lblFechaDev"
+                               text="20/11/2026"
+                               GridPane.rowIndex="3"
+                               GridPane.columnIndex="1"/>
+
+                        <Label text="Estado:"
+                               GridPane.rowIndex="4"
+                               GridPane.columnIndex="0"/>
+
+                        <Label fx:id="lblResultado"
+                               text="A tiempo"
+                               GridPane.rowIndex="4"
+                               GridPane.columnIndex="1"/>
+
+                    </GridPane>
+
+                    <Separator/>
+
+                    <Label text="Días de retraso:"/>
+
+                    <Label fx:id="lblRetraso"
+                           text="0"/>
+
+                    <Button text="Confirmar devolución"
+                            fx:id="btnConfirmar"
+                            onAction="#confirmarDevolucion"/>
+
+                    <Label fx:id="lblMensaje"
+                           text="El ejemplar volverá a estar disponible."/>
+
+                </VBox>
+
+            </HBox>
+
+            <!-- Tabla inferior -->
+            <VBox spacing="10">
+
+                <Label text="Últimas devoluciones"/>
+
+                <TableView fx:id="tblDevoluciones">
+
+                    <columns>
+
+                        <TableColumn text="Libro"
+                                     prefWidth="250"/>
+
+                        <TableColumn text="Lector"
+                                     prefWidth="250"/>
+
+                        <TableColumn text="Fecha"
+                                     prefWidth="150"/>
+
+                        <TableColumn text="Estado"
+                                     prefWidth="150"/>
+
+                    </columns>
+
+                </TableView>
+
+            </VBox>
+
+        </VBox>
+    </center>
+
 </BorderPane>

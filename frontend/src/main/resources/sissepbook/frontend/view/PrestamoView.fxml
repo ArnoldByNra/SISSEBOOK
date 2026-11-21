@@ -1,11 +1,184 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<!-- QUÉ SE VA A HACER AQUÍ: Seleccionar lector; campo ScannerField: cada código leído agrega el ejemplar a la lista; botón Confirmar -> POST /api/prestamos (transacción en BD). Mostrar fecha de vencimiento. -->
-<!-- Solo estructura. Colores, tamaños y formas se definen en css/estilos.css -->
-<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
             fx:controller="sissepbook.frontend.controller.PrestamoController">
-    <top><Label text="PrestamoView"/></top>
-    <center><VBox><!-- TODO: componentes según Figma --></VBox></center>
+
+    <!-- Encabezado -->
+    <top>
+        <HBox spacing="20" alignment="CENTER_LEFT">
+            <padding>
+                <Insets top="15" right="20" bottom="15" left="20"/>
+            </padding>
+
+            <VBox HBox.hgrow="ALWAYS">
+                <Label text="Préstamos"/>
+                <Label text="Gestiona nuevos préstamos y consulta los movimientos activos."/>
+            </VBox>
+
+            <Button text="Ver historial"/>
+        </HBox>
+    </top>
+
+    <!-- Contenido principal -->
+    <center>
+        <VBox spacing="20">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <!-- Parte superior -->
+            <HBox spacing="20">
+
+                <!-- NUEVO PRESTAMO -->
+                <VBox spacing="15" HBox.hgrow="ALWAYS">
+
+                    <HBox>
+                        <Label text="Nuevo préstamo"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Label text="Préstamo por 14 días"/>
+                    </HBox>
+
+                    <!-- Libro -->
+                    <Label text="01"/>
+                    <Label text="Selecciona un libro"/>
+
+                    <Label text="Código de barras / ISBN"/>
+
+                    <HBox spacing="10">
+                        <TextField fx:id="txtCodigoLibro"
+                                   promptText="Ingrese código"/>
+                        <Button text="Escanear"/>
+                    </HBox>
+
+                    <VBox spacing="5">
+                        <Label text="Título del libro"/>
+                        <Label text="Autor y editorial"/>
+                        <Label text="Disponibles: 8"/>
+                    </VBox>
+
+                    <!-- Lector -->
+                    <Label text="02"/>
+                    <Label text="Identifica al lector"/>
+
+                    <Label text="Matrícula, nombre o documento"/>
+
+                    <TextField fx:id="txtLector"
+                               promptText="ID del lector"/>
+
+                    <VBox spacing="5">
+                        <Label text="Nombre del lector"/>
+                        <Label text="Carrera o categoría"/>
+                        <Label text="Usuario habilitado"/>
+                    </VBox>
+
+                    <!-- Fechas -->
+                    <HBox spacing="15">
+
+                        <VBox spacing="5" HBox.hgrow="ALWAYS">
+                            <Label text="Fecha de préstamo"/>
+                            <DatePicker fx:id="dpPrestamo"/>
+                        </VBox>
+
+                        <VBox spacing="5" HBox.hgrow="ALWAYS">
+                            <Label text="Fecha límite de devolución"/>
+                            <DatePicker fx:id="dpVencimiento"/>
+                        </VBox>
+
+                    </HBox>
+
+                </VBox>
+
+                <!-- RESUMEN -->
+                <VBox spacing="15" prefWidth="300">
+
+                    <Label text="Resumen del préstamo"/>
+                    <Label text="Revisa la información antes de confirmar."/>
+
+                    <Separator/>
+
+                    <GridPane hgap="10" vgap="10">
+
+                        <Label text="Libro:"
+                               GridPane.columnIndex="0"
+                               GridPane.rowIndex="0"/>
+                        <Label text="Cien años de soledad"
+                               GridPane.columnIndex="1"
+                               GridPane.rowIndex="0"/>
+
+                        <Label text="Lector:"
+                               GridPane.columnIndex="0"
+                               GridPane.rowIndex="1"/>
+                        <Label text="Camila Navarro"
+                               GridPane.columnIndex="1"
+                               GridPane.rowIndex="1"/>
+
+                        <Label text="Ejemplares:"
+                               GridPane.columnIndex="0"
+                               GridPane.rowIndex="2"/>
+                        <Label text="1"
+                               GridPane.columnIndex="1"
+                               GridPane.rowIndex="2"/>
+
+                        <Label text="Fecha préstamo:"
+                               GridPane.columnIndex="0"
+                               GridPane.rowIndex="3"/>
+                        <Label text="18/11/2026"
+                               GridPane.columnIndex="1"
+                               GridPane.rowIndex="3"/>
+
+                        <Label text="Devolver antes de:"
+                               GridPane.columnIndex="0"
+                               GridPane.rowIndex="4"/>
+                        <Label text="02/12/2026"
+                               GridPane.columnIndex="1"
+                               GridPane.rowIndex="4"/>
+
+                    </GridPane>
+
+                    <Separator/>
+
+                    <Button text="Confirmar préstamo"
+                            fx:id="btnConfirmar"
+                            onAction="#confirmarPrestamo"/>
+
+                    <Label text="El lector podrá retirar el libro al confirmar."/>
+
+                </VBox>
+
+            </HBox>
+
+            <!-- TABLA INFERIOR -->
+            <VBox spacing="10">
+
+                <Label text="Préstamos del día"/>
+
+                <TableView fx:id="tblPrestamos">
+
+                    <columns>
+
+                        <TableColumn text="Libro"
+                                     prefWidth="300"/>
+
+                        <TableColumn text="Lector"
+                                     prefWidth="250"/>
+
+                        <TableColumn text="Fecha"
+                                     prefWidth="150"/>
+
+                        <TableColumn text="Estado"
+                                     prefWidth="150"/>
+
+                    </columns>
+
+                </TableView>
+
+            </VBox>
+
+        </VBox>
+    </center>
+
 </BorderPane>

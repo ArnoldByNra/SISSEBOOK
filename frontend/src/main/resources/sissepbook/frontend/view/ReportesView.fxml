@@ -1,11 +1,117 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<!-- QUÉ SE VA A HACER AQUÍ: Dos pestañas/tablas: libros más solicitados y lectores con préstamos vencidos. -->
-<!-- Solo estructura. Colores, tamaños y formas se definen en css/estilos.css -->
-<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
             fx:controller="sissepbook.frontend.controller.ReportesController">
-    <top><Label text="ReportesView"/></top>
-    <center><VBox><!-- TODO: componentes según Figma --></VBox></center>
+
+    <!-- Encabezado -->
+    <top>
+        <VBox spacing="5">
+            <padding>
+                <Insets top="15" right="20" bottom="15" left="20"/>
+            </padding>
+
+            <Label text="Reportes"/>
+            <Label text="Convierte la actividad de tu biblioteca en mejores decisiones."/>
+
+        </VBox>
+    </top>
+
+    <!-- Contenido principal -->
+    <center>
+        <VBox spacing="15">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <!-- Filtros -->
+            <HBox spacing="10">
+
+                <VBox spacing="5">
+                    <Label text="Periodo"/>
+                    <DatePicker fx:id="dpInicio"/>
+                </VBox>
+
+                <VBox spacing="5">
+                    <Label text="Hasta"/>
+                    <DatePicker fx:id="dpFin"/>
+                </VBox>
+
+                <VBox spacing="5">
+                    <Label text="Tipo de reporte"/>
+                    <ComboBox fx:id="cmbTipoReporte"/>
+                </VBox>
+
+                <Button text="Aplicar"
+                        fx:id="btnAplicar"/>
+            </HBox>
+
+            <!-- Pestañas -->
+            <TabPane VBox.vgrow="ALWAYS">
+
+                <!-- Libros más solicitados -->
+                <tabs>
+
+                    <Tab text="Libros más solicitados" closable="false">
+
+                        <TableView fx:id="tblLibrosSolicitados">
+
+                            <columns>
+
+                                <TableColumn text="Posición"
+                                             prefWidth="100"/>
+
+                                <TableColumn text="Libro"
+                                             prefWidth="300"/>
+
+                                <TableColumn text="Autor"
+                                             prefWidth="250"/>
+
+                                <TableColumn text="Préstamos"
+                                             prefWidth="150"/>
+
+                            </columns>
+
+                        </TableView>
+
+                    </Tab>
+
+                    <!-- Lectores con vencimientos -->
+                    <Tab text="Préstamos vencidos" closable="false">
+
+                        <TableView fx:id="tblPrestamosVencidos">
+
+                            <columns>
+
+                                <TableColumn text="Lector"
+                                             prefWidth="250"/>
+
+                                <TableColumn text="Matrícula"
+                                             prefWidth="150"/>
+
+                                <TableColumn text="Libro"
+                                             prefWidth="250"/>
+
+                                <TableColumn text="Fecha límite"
+                                             prefWidth="150"/>
+
+                                <TableColumn text="Días de retraso"
+                                             prefWidth="150"/>
+
+                            </columns>
+
+                        </TableView>
+
+                    </Tab>
+
+                </tabs>
+
+            </TabPane>
+
+        </VBox>
+    </center>
+
 </BorderPane>

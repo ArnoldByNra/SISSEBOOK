@@ -1,11 +1,116 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<!-- QUÉ SE VA A HACER AQUÍ: Tabla de ejemplares por libro, alta con código de barras (campo con ScannerField), cambio de ubicación/estado. -->
-<!-- Solo estructura. Colores, tamaños y formas se definen en css/estilos.css -->
-<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
             fx:controller="sissepbook.frontend.controller.EjemplaresController">
-    <top><Label text="EjemplaresView"/></top>
-    <center><VBox><!-- TODO: componentes según Figma --></VBox></center>
+
+    <!-- Encabezado -->
+    <top>
+        <VBox spacing="5">
+            <padding>
+                <Insets top="15" right="20" bottom="15" left="20"/>
+            </padding>
+
+            <Label text="Ejemplares"/>
+            <Label text="Administra la disponibilidad física de cada libro."/>
+        </VBox>
+    </top>
+
+    <center>
+        <VBox spacing="20">
+
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <!-- Selección del libro -->
+            <VBox spacing="10">
+
+                <Label text="Buscar libro"/>
+
+                <HBox spacing="10">
+
+                    <TextField fx:id="txtBuscarLibro"
+                               promptText="Título, ISBN o autor"/>
+
+                    <Button text="Buscar"/>
+
+                </HBox>
+
+            </VBox>
+
+            <!-- Alta de ejemplar -->
+            <VBox spacing="10">
+
+                <Label text="Registrar nuevo ejemplar"/>
+
+                <HBox spacing="10">
+
+                    <TextField fx:id="txtCodigoBarras"
+                               promptText="Escanear código de barras"/>
+
+                    <Button text="Escanear"
+                            onAction="#escanearCodigo"/>
+
+                    <Button text="Registrar"
+                            onAction="#registrarEjemplar"/>
+
+                </HBox>
+
+            </VBox>
+
+            <!-- Datos del libro -->
+            <GridPane hgap="10" vgap="10">
+
+                <Label text="Libro:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                <Label fx:id="lblLibro" text="Cien años de soledad"
+                       GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                <Label text="Autor:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                <Label fx:id="lblAutor" text="Gabriel García Márquez"
+                       GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+            </GridPane>
+
+            <!-- Tabla de ejemplares -->
+            <TableView fx:id="tblEjemplares" VBox.vgrow="ALWAYS">
+
+                <columns>
+
+                    <TableColumn text="Código"
+                                 prefWidth="200"/>
+
+                    <TableColumn text="Ubicación"
+                                 prefWidth="200"/>
+
+                    <TableColumn text="Estado"
+                                 prefWidth="150"/>
+
+                    <TableColumn text="Fecha Alta"
+                                 prefWidth="150"/>
+
+                </columns>
+
+            </TableView>
+
+            <!-- Edición -->
+            <HBox spacing="10">
+
+                <ComboBox fx:id="cmbUbicacion"
+                          promptText="Ubicación"/>
+
+                <ComboBox fx:id="cmbEstado"
+                          promptText="Estado"/>
+
+                <Button text="Actualizar"
+                        onAction="#actualizarEjemplar"/>
+
+            </HBox>
+
+        </VBox>
+    </center>
+
 </BorderPane>
