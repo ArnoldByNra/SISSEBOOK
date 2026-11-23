@@ -2,10 +2,33 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<!-- QUÉ SE VA A HACER AQUÍ: Campo ScannerField: al leer el código -> GET /api/ejemplares/codigo/{cb}; mostrar libro, estado, ubicación e historial. -->
-<!-- Solo estructura. Colores, tamaños y formas se definen en css/estilos.css -->
+<!-- Consulta por código: escanear -> GET /api/ejemplares/codigo/{cb}; mostrar libro, estado, ubicación y disponibilidad. -->
 <BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-            fx:controller="sissepbook.frontend.controller.ConsultaCodigoController">
-    <top><Label text="ConsultaCodigoView"/></top>
-    <center><VBox><!-- TODO: componentes según Figma --></VBox></center>
+            fx:controller="sissepbook.frontend.controller.ConsultaCodigoController" styleClass="contenido">
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <Button text="← Menú" onAction="#volver"/>
+            <Label text="Consultar ejemplar por código" styleClass="titulo-seccion"/>
+        </HBox>
+    </top>
+    <center>
+        <VBox alignment="TOP_CENTER" spacing="16" maxWidth="640">
+            <TextField fx:id="campoCodigo" promptText="Escanea o escribe el código y presiona ENTER" prefWidth="380"/>
+
+            <GridPane fx:id="panelDatos" hgap="14" vgap="10" styleClass="card" visible="false" managed="false">
+                <Label text="Título:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                <Label fx:id="lblTitulo" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                <Label text="Código interno:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                <Label fx:id="lblInterno" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                <Label text="Estado:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                <Label fx:id="lblEstado" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                <Label text="Ubicación:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                <Label fx:id="lblUbicacion" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                <Label text="Disponibles del título:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                <Label fx:id="lblDisponibles" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+            </GridPane>
+
+            <Label fx:id="lblMensaje" wrapText="true"/>
+        </VBox>
+    </center>
 </BorderPane>

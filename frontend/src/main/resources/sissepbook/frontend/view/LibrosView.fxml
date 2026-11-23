@@ -2,10 +2,38 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<!-- QUÉ SE VA A HACER AQUÍ: Tabla de libros, búsqueda, formulario alta/edición/baja. -->
-<!-- Solo estructura. Colores, tamaños y formas se definen en css/estilos.css -->
+<!-- Libros: tabla, búsqueda y formulario alta/edición/baja. -->
 <BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-            fx:controller="sissepbook.frontend.controller.LibrosController">
-    <top><Label text="LibrosView"/></top>
-    <center><VBox><!-- TODO: componentes según Figma --></VBox></center>
+            fx:controller="sissepbook.frontend.controller.LibrosController" styleClass="contenido">
+    <top>
+        <VBox spacing="10">
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Button text="← Menú" onAction="#volver"/>
+                <Label text="Libros" styleClass="titulo-seccion"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <TextField fx:id="campoBusqueda" promptText="Buscar título/autor/ISBN" prefWidth="260" onAction="#buscar"/>
+                <Button text="Buscar" onAction="#buscar"/>
+            </HBox>
+                        <HBox spacing="10" styleClass="barra-filtros">
+                <Button fx:id="btnNuevo" text="Nuevo" onAction="#nuevo" styleClass="btn-primario"/>
+                <Button fx:id="btnEditar" text="Editar" onAction="#editar"/>
+                <Button fx:id="btnBaja" text="Dar de baja" onAction="#desactivar" styleClass="btn-peligro"/>
+            </HBox>
+        </VBox>
+    </top>
+    <center>
+        <TableView fx:id="tabla" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colId" text="ID" prefWidth="50"/>
+                <TableColumn fx:id="colTitulo" text="Título" prefWidth="240"/>
+                <TableColumn fx:id="colAutor" text="Autor" prefWidth="180"/>
+                <TableColumn fx:id="colEditorial" text="Editorial" prefWidth="140"/>
+                <TableColumn fx:id="colIsbn" text="ISBN" prefWidth="140"/>
+                <TableColumn fx:id="colCategoria" text="Categoría" prefWidth="130"/>
+                <TableColumn fx:id="colAnio" text="Año" prefWidth="70"/>
+                <TableColumn fx:id="colDisp" text="Disponibles" prefWidth="90"/>
+                <TableColumn fx:id="colActivo" text="Activo" prefWidth="70"/>
+            </columns>
+        </TableView>
+    </center>
 </BorderPane>

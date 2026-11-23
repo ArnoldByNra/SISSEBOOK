@@ -2,10 +2,21 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<!-- QUÉ SE VA A HACER AQUÍ: Campo ScannerField: al leer el código -> POST /api/devoluciones; mostrar días de retraso y mensaje. -->
-<!-- Solo estructura. Colores, tamaños y formas se definen en css/estilos.css -->
+<!-- Devolución: escanear código -> POST /api/devoluciones, mostrar días de retraso. -->
 <BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-            fx:controller="sissepbook.frontend.controller.DevolucionController">
-    <top><Label text="DevolucionView"/></top>
-    <center><VBox><!-- TODO: componentes según Figma --></VBox></center>
+            fx:controller="sissepbook.frontend.controller.DevolucionController" styleClass="contenido">
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <Button text="← Menú" onAction="#volver"/>
+            <Label text="Devolución" styleClass="titulo-seccion"/>
+        </HBox>
+    </top>
+    <center>
+        <VBox alignment="TOP_CENTER" spacing="18" maxWidth="620">
+            <Label text="Escanea el código de barras del ejemplar a devolver" styleClass="subtitulo"/>
+            <TextField fx:id="campoCodigo" promptText="Escanea y presiona ENTER" prefWidth="360"/>
+            <Label fx:id="lblResultado" wrapText="true" styleClass="titulo-seccion"/>
+            <Label fx:id="lblDetalle" wrapText="true"/>
+        </VBox>
+    </center>
 </BorderPane>

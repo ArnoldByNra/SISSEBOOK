@@ -2,10 +2,45 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<!-- QUÉ SE VA A HACER AQUÍ: Seleccionar lector; campo ScannerField: cada código leído agrega el ejemplar a la lista; botón Confirmar -> POST /api/prestamos (transacción en BD). Mostrar fecha de vencimiento. -->
-<!-- Solo estructura. Colores, tamaños y formas se definen en css/estilos.css -->
+<!-- Nuevo préstamo: seleccionar lector, escanear N ejemplares, confirmar (transacción en BD). -->
 <BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-            fx:controller="sissepbook.frontend.controller.PrestamoController">
-    <top><Label text="PrestamoView"/></top>
-    <center><VBox><!-- TODO: componentes según Figma --></VBox></center>
+            fx:controller="sissepbook.frontend.controller.PrestamoController" styleClass="contenido">
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <Button text="← Menú" onAction="#volver"/>
+            <Label text="Nuevo préstamo" styleClass="titulo-seccion"/>
+        </HBox>
+    </top>
+    <center>
+        <VBox spacing="12">
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Matrícula del lector:"/>
+                <TextField fx:id="campoMatricula" promptText="Ej. MAT-2026-001" prefWidth="200"/>
+                <Button text="Buscar lector" onAction="#buscarLector"/>
+                <Label fx:id="lblLector" styleClass="estado-ok"/>
+            </HBox>
+
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Escanear código de barras:"/>
+                <TextField fx:id="campoCodigo" promptText="Escanea y presiona ENTER" prefWidth="260"/>
+                <Label text="Plazo (días):"/>
+                <TextField fx:id="campoDias" text="14" prefWidth="60"/>
+            </HBox>
+
+            <TableView fx:id="tablaEscaneados" VBox.vgrow="ALWAYS" prefHeight="320">
+                <columns>
+                    <TableColumn fx:id="colCodigo" text="Código de barras" prefWidth="220"/>
+                    <TableColumn fx:id="colTitulo" text="Título" prefWidth="320"/>
+                    <TableColumn fx:id="colEstado" text="Estado" prefWidth="120"/>
+                </columns>
+            </TableView>
+
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Button text="Quitar seleccionado" onAction="#quitar"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button text="Confirmar préstamo" onAction="#confirmar" styleClass="btn-primario"/>
+            </HBox>
+            <Label fx:id="lblMensaje" wrapText="true"/>
+        </VBox>
+    </center>
 </BorderPane>

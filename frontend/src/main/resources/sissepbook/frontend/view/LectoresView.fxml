@@ -2,10 +2,35 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<!-- QUÉ SE VA A HACER AQUÍ: Tabla de lectores, búsqueda por matrícula, alta/edición, suspender. -->
-<!-- Solo estructura. Colores, tamaños y formas se definen en css/estilos.css -->
+<!-- Lectores: tabla, búsqueda, alta/edición y cambio de estado. -->
 <BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-            fx:controller="sissepbook.frontend.controller.LectoresController">
-    <top><Label text="LectoresView"/></top>
-    <center><VBox><!-- TODO: componentes según Figma --></VBox></center>
+            fx:controller="sissepbook.frontend.controller.LectoresController" styleClass="contenido">
+    <top>
+        <VBox spacing="10">
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Button text="← Menú" onAction="#volver"/>
+                <Label text="Lectores" styleClass="titulo-seccion"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <TextField fx:id="campoBusqueda" promptText="Buscar matrícula/nombre" prefWidth="260" onAction="#buscar"/>
+                <Button text="Buscar" onAction="#buscar"/>
+            </HBox>
+            <HBox spacing="10" styleClass="barra-filtros">
+                <Button text="Nuevo" onAction="#nuevo" styleClass="btn-primario"/>
+                <Button text="Editar" onAction="#editar"/>
+            </HBox>
+        </VBox>
+    </top>
+    <center>
+        <TableView fx:id="tabla">
+            <columns>
+                <TableColumn fx:id="colId" text="ID" prefWidth="50"/>
+                <TableColumn fx:id="colMatricula" text="Matrícula" prefWidth="140"/>
+                <TableColumn fx:id="colNombre" text="Nombre" prefWidth="240"/>
+                <TableColumn fx:id="colCarrera" text="Carrera/Área" prefWidth="180"/>
+                <TableColumn fx:id="colCorreo" text="Correo" prefWidth="220"/>
+                <TableColumn fx:id="colEstado" text="Estado" prefWidth="100"/>
+                <TableColumn fx:id="colMax" text="Máx. préstamos" prefWidth="110"/>
+            </columns>
+        </TableView>
+    </center>
 </BorderPane>

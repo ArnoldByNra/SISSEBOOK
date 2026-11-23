@@ -2,10 +2,28 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<!-- QUÉ SE VA A HACER AQUÍ: Menú principal: botones a cada módulo, filtrados por Permisos; cerrar sesión. -->
-<!-- Solo estructura. Colores, tamaños y formas se definen en css/estilos.css -->
+<!-- Menú principal: botones de módulos filtrados por rol + cerrar sesión. -->
 <BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
             fx:controller="sissepbook.frontend.controller.MainController">
-    <top><Label text="MainView"/></top>
-    <center><VBox><!-- TODO: componentes según Figma --></VBox></center>
+    <top>
+        <HBox styleClass="barra-superior" alignment="CENTER_LEFT" spacing="16">
+            <Label text="SISSE · Biblioteca" styleClass="titulo-barra"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label fx:id="lblUsuario" styleClass="usuario-barra"/>
+            <Button text="Cerrar sesión" onAction="#cerrarSesion" styleClass="btn-secundario"/>
+        </HBox>
+    </top>
+    <center>
+        <TilePane fx:id="panelModulos" hgap="18" vgap="18" padding="24" prefColumns="3" alignment="TOP_CENTER">
+                        <Button fx:id="btnLibros" text="Libros" onAction="#irLibros" styleClass="btn-modulo"/>
+            <Button fx:id="btnEjemplares" text="Ejemplares" onAction="#irEjemplares" styleClass="btn-modulo"/>
+            <Button fx:id="btnLectores" text="Lectores" onAction="#irLectores" styleClass="btn-modulo"/>
+            <Button fx:id="btnPrestamo" text="Nuevo préstamo" onAction="#irPrestamo" styleClass="btn-modulo"/>
+            <Button fx:id="btnDevolucion" text="Devolución" onAction="#irDevolucion" styleClass="btn-modulo"/>
+            <Button text="Consultar código" onAction="#irConsulta" styleClass="btn-modulo"/>
+            <Button text="Reportes" onAction="#irReportes" styleClass="btn-modulo"/>
+            <Button fx:id="btnUsuarios" text="Usuarios" onAction="#irUsuarios" styleClass="btn-modulo"/>
+            <Button fx:id="btnBitacora" text="Bitácora" onAction="#irBitacora" styleClass="btn-modulo"/>
+        </TilePane>
+    </center>
 </BorderPane>

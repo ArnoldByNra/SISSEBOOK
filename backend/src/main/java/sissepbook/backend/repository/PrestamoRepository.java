@@ -1,11 +1,83 @@
 package sissepbook.backend.repository;
 
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Map;
+
 /**
- * QUÉ SE VA A HACER AQUÍ:
- * - CALL sp_registrar_prestamo(?,?,?,?,?,?) y CALL sp_registrar_devolucion(?,?,?,?) con parámetros IN y OUT (CallableStatement.registerOutParameter).
- * - Antes de cada CALL: SET @usuario_app = ? para la auditoría.
- * - Todas las llamadas en la MISMA conexión.
- * - Única capa que escribe SQL / llama a SP.
+ * Llama a los stored procedures de préstamo/devolución (con parámetros IN y OUT)
+ * dentro de una misma conexión. La transacción real vive en el SP
+ * (START TRANSACTION / COMMIT / ROLLBACK). Única capa que llama a los SP.
  */
+@Repository
 public class PrestamoRepository {
+
+    private final JdbcTemplate jdbc;
+
+    public PrestamoRepository(JdbcTemplate jdbc) {
+        this.jdbc = jdbc;
+    }
+
+    /**
+     * CALL sp_registrar_prestamo_codigo(codigo, idLector, idUsuario, dias, OUT idPrestamo)
+     * Devuelve el id del préstamo generado.
+     */
+    public int registrarPrestamo(String codigoBarras, int idLector, int idUsuario, int diasPlazo, String usuarioApp) {
+        return jdbc.execute((org.springframework.jdbc.core.ConnectionCallback<Integer>) con -> {
+            try (var setUsuario = con.prepareStatement("SET @usuario_app = ?")) {
+                setUsuario.setString(1, usuarioApp);
+                setUsuario.execute();
+            }
+            try (var cs = con.prepareCall("{CALL sp_registrar_prestamo_codigo(?, ?, ?, ?, ?)}")) {
+                cs.setString(1, codigoBarras);
+                cs.setInt(2, idLector);
+                cs.setInt(3, idUsuario);
+                cs.setInt(4, diasPlazo);
+                cs.registerOutParameter(5, java.sql.Types.INTEGER);
+                cs.execute();
+                return cs.getInt(5);
+            }
+        });
+    }
+
+    /**
+     * CALL sp_registrar_devolucion_codigo(codigo, idUsuario, OUT diasRetraso)
+     * Devuelve los días de retraso.
+     */
+    public int registrarDevolucion(String codigoBarras, int idUsuario, String usuarioApp) {
+        return jdbc.execute((org.springframework.jdbc.core.ConnectionCallback<Integer>) con -> {
+            try (var setUsuario = con.prepareStatement("SET @usuario_app = ?")) {
+                setUsuario.setString(1, usuarioApp);
+                setUsuario.execute();
+            }
+            try (var cs = con.prepareCall("{CALL sp_registrar_devolucion_codigo(?, ?, ?)}")) {
+                cs.setString(1, codigoBarras);
+                cs.setInt(2, idUsuario);
+                cs.registerOutParameter(3, java.sql.Types.INTEGER);
+                cs.execute();
+                return cs.getInt(3);
+            }
+        });
+    }
+
+    /** Fecha de vencimiento del préstamo recién creado. */
+    public java.time.LocalDateTime fechaVencimiento(int idPrestamo) {
+        return jdbc.queryForObject("SELECT fecha_vencimiento FROM prestamos WHERE id_prestamo = ?",
+                (rs, i) -> rs.getTimestamp("fecha_vencimiento").toLocalDateTime(), idPrestamo);
+    }
+
+    /** Préstamos con al menos un ejemplar sin devolver y ya vencidos (usa fn_calcular_dias_retraso). */
+    public List<Map<String, Object>> prestamosVencidos() {
+        String sql = "SELECT p.id_prestamo, l.matricula, l.nombre_completo, e.codigo_barras, " +
+                "p.fecha_vencimiento, fn_calcular_dias_retraso(p.fecha_vencimiento, NULL) AS dias_retraso " +
+                "FROM prestamos p " +
+                "INNER JOIN lectores l ON l.id_lector = p.id_lector " +
+                "INNER JOIN detalle_prestamo dp ON dp.id_prestamo = p.id_prestamo " +
+                "INNER JOIN ejemplares e ON e.id_ejemplar = dp.id_ejemplar " +
+                "WHERE dp.fecha_devolucion_real IS NULL AND p.fecha_vencimiento < NOW() " +
+                "ORDER BY dias_retraso DESC";
+        return jdbc.queryForList(sql);
+    }
 }

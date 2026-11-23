@@ -2,10 +2,30 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<!-- QUÉ SE VA A HACER AQUÍ: Solo ADMIN: tabla de usuarios, alta, cambio de rol, activar/desactivar. -->
-<!-- Solo estructura. Colores, tamaños y formas se definen en css/estilos.css -->
+<!-- Usuarios (solo ADMIN): tabla, alta, edición de rol y activar/desactivar. -->
 <BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-            fx:controller="sissepbook.frontend.controller.UsuariosController">
-    <top><Label text="UsuariosView"/></top>
-    <center><VBox><!-- TODO: componentes según Figma --></VBox></center>
+            fx:controller="sissepbook.frontend.controller.UsuariosController" styleClass="contenido">
+    <top>
+        <VBox spacing="10">
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Button text="← Menú" onAction="#volver"/>
+                <Label text="Usuarios del sistema" styleClass="titulo-seccion"/>
+            </HBox>
+            <HBox spacing="10" styleClass="barra-filtros">
+                <Button text="Nuevo usuario" onAction="#nuevo" styleClass="btn-primario"/>
+                <Button text="Editar" onAction="#editar"/>
+            </HBox>
+        </VBox>
+    </top>
+    <center>
+        <TableView fx:id="tabla">
+            <columns>
+                <TableColumn fx:id="colId" text="ID" prefWidth="50"/>
+                <TableColumn fx:id="colNombre" text="Nombre completo" prefWidth="220"/>
+                <TableColumn fx:id="colUsuario" text="Usuario" prefWidth="150"/>
+                <TableColumn fx:id="colRol" text="Rol" prefWidth="150"/>
+                <TableColumn fx:id="colActivo" text="Activo" prefWidth="90"/>
+            </columns>
+        </TableView>
+    </center>
 </BorderPane>

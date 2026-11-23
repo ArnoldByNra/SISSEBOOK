@@ -2,10 +2,18 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<!-- QUÉ SE VA A HACER AQUÍ: Leer usuario/contraseña, POST /api/auth/login, guardar Sesion, ir al menú. Mostrar error si falla. -->
-<!-- Solo estructura. Colores, tamaños y formas se definen en css/estilos.css -->
+<!-- Login: usuario/contraseña -> POST /api/auth/login -> guardar Sesion -> menú. -->
 <BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-            fx:controller="sissepbook.frontend.controller.LoginController">
-    <top><Label text="LoginView"/></top>
-    <center><VBox><!-- TODO: componentes según Figma --></VBox></center>
+            fx:controller="sissepbook.frontend.controller.LoginController" styleClass="login-root">
+    <center>
+        <VBox alignment="CENTER" spacing="14" maxWidth="360" styleClass="card">
+            <Label text="SISSE · Biblioteca" styleClass="titulo"/>
+            <Label text="Inicia sesión para continuar" styleClass="subtitulo"/>
+            <TextField fx:id="campoUsuario" promptText="Usuario"/>
+            <PasswordField fx:id="campoContrasena" promptText="Contraseña"/>
+            <Label fx:id="lblError" styleClass="error" wrapText="true"/>
+            <Button fx:id="btnIngresar" text="Ingresar" defaultButton="true" maxWidth="Infinity" onAction="#ingresar" styleClass="btn-primario"/>
+            <Label fx:id="lblCargando" text="" styleClass="subtitulo"/>
+        </VBox>
+    </center>
 </BorderPane>
