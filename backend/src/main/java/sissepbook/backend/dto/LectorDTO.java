@@ -1,9 +1,43 @@
 package sissepbook.backend.dto;
 
-/**
- * QUÉ SE VA A HACER AQUÍ:
- * - Objeto de transferencia. Campos: idLector, matricula, nombreCompleto, carreraOArea, correo, estadoLector, maxPrestamos.
- * - Usar validaciones (@NotBlank, etc.) donde aplique.
- */
+import jakarta.validation.constraints.NotBlank;
+
+/** Representa un lector (usuario de la biblioteca). */
 public class LectorDTO {
+
+    private Integer idLector;
+
+    @NotBlank(message = "La matrícula es obligatoria.")
+    private String matricula;
+
+    @NotBlank(message = "El nombre completo es obligatorio.")
+    private String nombreCompleto;
+
+    private String carreraOArea;
+    private String correo;
+
+    private String estadoLector = "activo";
+
+    private Integer maxPrestamos = 3;
+
+    public Integer getIdLector() { return idLector; }
+    public void setIdLector(Integer idLector) { this.idLector = idLector; }
+
+    public String getMatricula() { return matricula; }
+    public void setMatricula(String matricula) { this.matricula = matricula; }
+
+    public String getNombreCompleto() { return nombreCompleto; }
+    public void setNombreCompleto(String nombreCompleto) { this.nombreCompleto = nombreCompleto; }
+
+    public String getCarreraOArea() { return carreraOArea; }
+    public void setCarreraOArea(String carreraOArea) { this.carreraOArea = carreraOArea; }
+
+    public String getCorreo() { return correo; }
+    public void setCorreo(String correo) { this.correo = correo; }
+
+    public String getEstadoLector() { return estadoLector; }
+    public void setEstadoLector(String estadoLector) { this.estadoLector = estadoLector; }
+
+    public Integer getMaxPrestamos() { return maxPrestamos; }
+    public void setMaxPrestamos(Integer maxPrestamos) { this.maxPrestamos = maxPrestamos; }
 }

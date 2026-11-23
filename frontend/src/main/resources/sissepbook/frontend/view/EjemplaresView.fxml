@@ -2,10 +2,33 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<!-- QUÉ SE VA A HACER AQUÍ: Tabla de ejemplares por libro, alta con código de barras (campo con ScannerField), cambio de ubicación/estado. -->
-<!-- Solo estructura. Colores, tamaños y formas se definen en css/estilos.css -->
+<!-- Ejemplares: elegir libro, tabla de sus ejemplares, alta con código de barras y cambio de estado/ubicación. -->
 <BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-            fx:controller="sissepbook.frontend.controller.EjemplaresController">
-    <top><Label text="EjemplaresView"/></top>
-    <center><VBox><!-- TODO: componentes según Figma --></VBox></center>
+            fx:controller="sissepbook.frontend.controller.EjemplaresController" styleClass="contenido">
+    <top>
+        <VBox spacing="10">
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Button text="← Menú" onAction="#volver"/>
+                <Label text="Ejemplares" styleClass="titulo-seccion"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Label text="Libro:"/>
+                <ComboBox fx:id="cbLibro" prefWidth="360" onAction="#cargarEjemplares"/>
+            </HBox>
+            <HBox spacing="10" styleClass="barra-filtros">
+                <Button text="Nuevo ejemplar" onAction="#nuevo" styleClass="btn-primario"/>
+                <Button text="Editar (estado/ubicación)" onAction="#editar"/>
+            </HBox>
+        </VBox>
+    </top>
+    <center>
+        <TableView fx:id="tabla">
+            <columns>
+                <TableColumn fx:id="colId" text="ID" prefWidth="50"/>
+                <TableColumn fx:id="colCodigo" text="Código de barras" prefWidth="180"/>
+                <TableColumn fx:id="colInterno" text="Código interno" prefWidth="150"/>
+                <TableColumn fx:id="colEstado" text="Estado" prefWidth="120"/>
+                <TableColumn fx:id="colUbicacion" text="Ubicación" prefWidth="150"/>
+            </columns>
+        </TableView>
+    </center>
 </BorderPane>

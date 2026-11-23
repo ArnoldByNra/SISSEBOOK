@@ -2,10 +2,42 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<!-- QUÉ SE VA A HACER AQUÍ: Solo ADMIN: tabla de auditoría con filtros (tabla, usuario, fecha); ver info anterior/nueva. -->
-<!-- Solo estructura. Colores, tamaños y formas se definen en css/estilos.css -->
+<!-- Bitácora (solo ADMIN): tabla de auditoría con filtros por tabla/usuario y detalle info anterior/nueva. -->
 <BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-            fx:controller="sissepbook.frontend.controller.BitacoraController">
-    <top><Label text="BitacoraView"/></top>
-    <center><VBox><!-- TODO: componentes según Figma --></VBox></center>
+            fx:controller="sissepbook.frontend.controller.BitacoraController" styleClass="contenido">
+    <top>
+        <VBox spacing="10">
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Button text="← Menú" onAction="#volver"/>
+                <Label text="Bitácora de auditoría" styleClass="titulo-seccion"/>
+            </HBox>
+            <HBox spacing="10" styleClass="barra-filtros" alignment="CENTER_LEFT">
+                <Label text="Tabla:"/>
+                <ComboBox fx:id="cbTabla" prefWidth="150"/>
+                <Label text="Usuario:"/>
+                <TextField fx:id="campoUsuario" promptText="usuario_responsable" prefWidth="170"/>
+                <Button text="Filtrar" onAction="#filtrar" styleClass="btn-primario"/>
+            </HBox>
+        </VBox>
+    </top>
+    <center>
+        <SplitPane dividerPositions="0.62" orientation="VERTICAL">
+            <TableView fx:id="tabla">
+                <columns>
+                    <TableColumn fx:id="colId" text="ID" prefWidth="60"/>
+                    <TableColumn fx:id="colFecha" text="Fecha" prefWidth="160"/>
+                    <TableColumn fx:id="colTabla" text="Tabla" prefWidth="130"/>
+                    <TableColumn fx:id="colOperacion" text="Operación" prefWidth="100"/>
+                    <TableColumn fx:id="colRegistro" text="Registro" prefWidth="90"/>
+                    <TableColumn fx:id="colUsuario" text="Usuario" prefWidth="140"/>
+                </columns>
+            </TableView>
+            <VBox spacing="6" styleClass="card">
+                <Label text="Información anterior:" styleClass="titulo-seccion"/>
+                <TextArea fx:id="txtAnterior" editable="false" wrapText="true" prefRowCount="3"/>
+                <Label text="Información nueva:" styleClass="titulo-seccion"/>
+                <TextArea fx:id="txtNuevo" editable="false" wrapText="true" prefRowCount="3"/>
+            </VBox>
+        </SplitPane>
+    </center>
 </BorderPane>

@@ -1,9 +1,19 @@
 package sissepbook.backend.dto;
 
-/**
- * QUÉ SE VA A HACER AQUÍ:
- * - Objeto de transferencia. Campos: usuario, contraseña.
- * - Usar validaciones (@NotBlank, etc.) donde aplique.
- */
+import jakarta.validation.constraints.NotBlank;
+
+/** Credenciales de inicio de sesión. */
 public class LoginRequest {
+
+    @NotBlank(message = "El usuario es obligatorio.")
+    private String usuario;
+
+    @NotBlank(message = "La contraseña es obligatoria.")
+    private String contrasena;
+
+    public String getUsuario() { return usuario; }
+    public void setUsuario(String usuario) { this.usuario = usuario; }
+
+    public String getContrasena() { return contrasena; }
+    public void setContrasena(String contrasena) { this.contrasena = contrasena; }
 }
