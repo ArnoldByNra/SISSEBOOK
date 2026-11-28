@@ -1,9 +1,8 @@
 package sissepbook.backend.dto;
 
-/** Respuesta del login: token de sesión + datos del usuario. */
+/** Respuesta del login: datos del usuario autenticado. */
 public class LoginResponse {
 
-    private String token;
     private int idUsuario;
     private String nombreUsuario;
     private String nombreCompleto;
@@ -12,16 +11,12 @@ public class LoginResponse {
     public LoginResponse() {
     }
 
-    public LoginResponse(String token, int idUsuario, String nombreUsuario, String nombreCompleto, String rol) {
-        this.token = token;
+    public LoginResponse(int idUsuario, String nombreUsuario, String nombreCompleto, String rol) {
         this.idUsuario = idUsuario;
         this.nombreUsuario = nombreUsuario;
         this.nombreCompleto = nombreCompleto;
         this.rol = rol;
     }
-
-    public String getToken() { return token; }
-    public void setToken(String token) { this.token = token; }
 
     public int getIdUsuario() { return idUsuario; }
     public void setIdUsuario(int idUsuario) { this.idUsuario = idUsuario; }

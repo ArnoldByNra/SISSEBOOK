@@ -1,60 +1,55 @@
 package sissepbook.frontend.util;
 
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
+import sissepbook.frontend.ui.ShellView;
+import sissepbook.frontend.ui.Vistas;
 
-import java.io.IOException;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import java.awt.Dimension;
 
 /**
- * Cambia de pantalla: ir("LibrosView") carga el FXML y su CSS.
- * Guarda el Stage principal.
+ * Cambia de pantalla: ir("LibrosView"). Todas las pantallas están hechas en código (ui/Vistas).
+ * "MainView" crea el marco con menú lateral; con sesión iniciada las demás pantallas se muestran dentro de él.
  */
 public final class Navegador {
 
-    private static Stage stage;
-    private static final String FXML_BASE = "/sissepbook/frontend/view/";
-    private static final String CSS = "/sissepbook/frontend/css/estilos.css";
-    private static final double ANCHO = 1100;
-    private static final double ALTO = 720;
+    private static JFrame frame;
 
     private Navegador() {
     }
 
-    public static void init(Stage stagePrincipal) {
-        stage = stagePrincipal;
-        stage.setTitle("SISSE - Biblioteca");
-        stage.setWidth(ANCHO);
-        stage.setHeight(ALTO);
+    public static void init() {
+        frame = new JFrame("SISSE - Biblioteca");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(1200, 760);
+        frame.setMinimumSize(new Dimension(960, 600));
+        frame.setLocationRelativeTo(null);
     }
 
-    public static Stage stage() {
-        return stage;
+    public static JFrame frame() {
+        return frame;
     }
 
-    /** Carga la vista indicada (nombre sin extensión) y la muestra. */
     public static void ir(String nombreVista) {
+        if ("MainView".equals(nombreVista) && ShellView.mostrarEnShell("DashboardView")) {
+            return;
+        }
+        if (!"MainView".equals(nombreVista) && !"LoginView".equals(nombreVista)
+                && !"ConexionView".equals(nombreVista) && ShellView.mostrarEnShell(nombreVista)) {
+            return;
+        }
+        if ("LoginView".equals(nombreVista) || "ConexionView".equals(nombreVista)) {
+            ShellView.limpiar();
+        }
         try {
-            FXMLLoader loader = new FXMLLoader(Navegador.class.getResource(FXML_BASE + nombreVista + ".fxml"));
-            Parent root = loader.load();
-
-            Scene scene;
-            if (stage.getScene() == null) {
-                scene = new Scene(root, ANCHO, ALTO);
-                stage.setScene(scene);
-            } else {
-                stage.getScene().setRoot(root);
-                scene = stage.getScene();
+            JComponent raiz = "MainView".equals(nombreVista) ? ShellView.crear() : Vistas.crear(nombreVista);
+            frame.setContentPane(raiz);
+            frame.revalidate();
+            frame.repaint();
+            if (!frame.isVisible()) {
+                frame.setVisible(true);
             }
-            var css = Navegador.class.getResource(CSS);
-            if (css != null && !scene.getStylesheets().contains(css.toExternalForm())) {
-                scene.getStylesheets().add(css.toExternalForm());
-            }
-            if (!stage.isShowing()) {
-                stage.show();
-            }
-        } catch (IOException e) {
+        } catch (RuntimeException e) {
             Alertas.error("No se pudo abrir la pantalla '" + nombreVista + "': " + e.getMessage());
         }
     }

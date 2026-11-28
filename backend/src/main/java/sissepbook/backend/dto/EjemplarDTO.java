@@ -1,19 +1,15 @@
 package sissepbook.backend.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 /** Representa un ejemplar físico de un libro. */
 public class EjemplarDTO {
 
     private Integer idEjemplar;
 
-    @NotNull(message = "El libro es obligatorio.")
     private Integer idLibro;
 
     private String tituloLibro;
 
-    @NotBlank(message = "El código de barras es obligatorio.")
     private String codigoBarras;
 
     private String codigoInterno;

@@ -1,22 +1,25 @@
 package sissepbook.backend.service;
 
-import org.springframework.stereotype.Service;
 import sissepbook.backend.dto.PrestamoRequest;
 import sissepbook.backend.dto.PrestamoResponse;
+import sissepbook.backend.exception.Errores;
 import sissepbook.backend.exception.NegocioException;
+import sissepbook.backend.exception.Validar;
 import sissepbook.backend.repository.PrestamoRepository;
+import sissepbook.backend.security.Autorizacion;
+import sissepbook.backend.security.SesionActual;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
- * Orquesta el préstamo llamando al SP transaccional sp_registrar_prestamo_codigo.
- * Un préstamo puede incluir varios ejemplares; el SP valida y aplica COMMIT/ROLLBACK
- * por cada ejemplar. Si un ejemplar falla, se informa el error y se listan los ya registrados.
+ * Registra UN préstamo con todos los ejemplares escaneados, llamando al SP transaccional
+ * sp_registrar_prestamo_multiple: si un ejemplar falla (no existe, no disponible, lector
+ * suspendido o sin cupo) no se registra ninguno.
  */
-@Service
 public class PrestamoService {
 
     private static final int DIAS_DEFAULT = 14;
@@ -27,43 +30,45 @@ public class PrestamoService {
         this.prestamoRepository = prestamoRepository;
     }
 
-    public PrestamoResponse registrar(PrestamoRequest request, int idUsuario, String usuarioApp) {
-        List<String> codigos = request.getCodigosBarras();
-        if (codigos == null || codigos.isEmpty()) {
+    public PrestamoResponse registrar(PrestamoRequest request) {
+        SesionActual.Usuario usuario = Autorizacion.exigirGestion();
+        Validar.objeto(request.getIdLector(), "El lector es obligatorio.");
+
+        Set<String> unicos = new LinkedHashSet<>();
+        if (request.getCodigosBarras() != null) {
+            for (String codigo : request.getCodigosBarras()) {
+                String cb = codigo == null ? "" : codigo.trim();
+                if (cb.contains(",")) {
+                    throw new NegocioException("El código de barras «" + cb + "» no puede contener comas.");
+                }
+                if (!cb.isEmpty()) {
+                    unicos.add(cb);
+                }
+            }
+        }
+        if (unicos.isEmpty()) {
             throw new NegocioException("Debes escanear al menos un ejemplar.");
         }
         int dias = (request.getDiasPrestamo() != null && request.getDiasPrestamo() > 0)
                 ? request.getDiasPrestamo() : DIAS_DEFAULT;
 
-        List<Integer> ids = new ArrayList<>();
-        List<String> codigosPrestados = new ArrayList<>();
-        LocalDateTime vencimiento = null;
-
-        for (String codigo : codigos) {
-            String cb = codigo == null ? "" : codigo.trim();
-            if (cb.isEmpty()) {
-                continue;
-            }
-            try {
-                int idPrestamo = prestamoRepository.registrarPrestamo(cb, request.getIdLector(), idUsuario, dias, usuarioApp);
-                ids.add(idPrestamo);
-                codigosPrestados.add(cb);
-                vencimiento = prestamoRepository.fechaVencimiento(idPrestamo);
-            } catch (RuntimeException ex) {
-                String base = "Error al prestar el ejemplar " + cb + ": " + ex.getMessage();
-                if (!ids.isEmpty()) {
-                    base += " (Sí se registraron: " + String.join(", ", codigosPrestados) + ").";
-                }
-                throw new NegocioException(base);
-            }
+        List<String> codigos = new ArrayList<>(unicos);
+        PrestamoRepository.PrestamoMultiple r;
+        try {
+            r = prestamoRepository.registrarPrestamoMultiple(
+                    codigos, request.getIdLector(), usuario.idUsuario(), dias, usuario.nombreUsuario());
+        } catch (RuntimeException ex) {
+            throw new NegocioException(Errores.mensaje(ex));
         }
 
-        String mensaje = "Préstamo registrado para " + codigosPrestados.size() + " ejemplar(es). " +
-                "Fecha de vencimiento: " + (vencimiento != null ? vencimiento.toLocalDate() : "-") + ".";
-        return new PrestamoResponse(ids, vencimiento, codigosPrestados, mensaje);
+        String mensaje = "Préstamo #" + r.idPrestamo() + " registrado para " + r.totalEjemplares()
+                + " ejemplar(es). Fecha de vencimiento: "
+                + (r.vencimiento() != null ? r.vencimiento().toLocalDate() : "-") + ".";
+        return new PrestamoResponse(List.of(r.idPrestamo()), r.vencimiento(), codigos, mensaje);
     }
 
     public List<Map<String, Object>> vencidos() {
+        Autorizacion.exigirSesion();
         return prestamoRepository.prestamosVencidos();
     }
 }

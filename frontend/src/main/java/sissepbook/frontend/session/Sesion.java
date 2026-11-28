@@ -1,9 +1,8 @@
 package sissepbook.frontend.session;
 
-/** Guarda token, nombre y rol del usuario logueado. */
+/** Guarda nombre y rol del usuario logueado (para mostrar el menú según el rol). */
 public final class Sesion {
 
-    private static String token;
     private static int idUsuario;
     private static String nombreUsuario;
     private static String nombreCompleto;
@@ -12,8 +11,7 @@ public final class Sesion {
     private Sesion() {
     }
 
-    public static void iniciar(String token, int idUsuario, String nombreUsuario, String nombreCompleto, String rol) {
-        Sesion.token = token;
+    public static void iniciar(int idUsuario, String nombreUsuario, String nombreCompleto, String rol) {
         Sesion.idUsuario = idUsuario;
         Sesion.nombreUsuario = nombreUsuario;
         Sesion.nombreCompleto = nombreCompleto;
@@ -21,7 +19,6 @@ public final class Sesion {
     }
 
     public static void cerrar() {
-        token = null;
         idUsuario = 0;
         nombreUsuario = null;
         nombreCompleto = null;
@@ -29,10 +26,9 @@ public final class Sesion {
     }
 
     public static boolean activa() {
-        return token != null;
+        return nombreUsuario != null;
     }
 
-    public static String getToken() { return token; }
     public static int getIdUsuario() { return idUsuario; }
     public static String getNombreUsuario() { return nombreUsuario; }
     public static String getNombreCompleto() { return nombreCompleto; }

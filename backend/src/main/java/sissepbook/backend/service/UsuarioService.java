@@ -1,6 +1,7 @@
 package sissepbook.backend.service;
 
-import org.springframework.stereotype.Service;
+import sissepbook.backend.exception.Validar;
+import sissepbook.backend.security.Autorizacion;
 import sissepbook.backend.dto.UsuarioDTO;
 import sissepbook.backend.exception.NegocioException;
 import sissepbook.backend.repository.UsuarioRepository;
@@ -9,7 +10,6 @@ import sissepbook.backend.security.PasswordService;
 import java.util.List;
 
 /** Alta/edición de usuarios del sistema con hash BCrypt. */
-@Service
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
@@ -21,14 +21,18 @@ public class UsuarioService {
     }
 
     public List<UsuarioDTO> listar() {
+        Autorizacion.exigirAdmin();
         return usuarioRepository.listar();
     }
 
     public List<String[]> listarRoles() {
+        Autorizacion.exigirAdmin();
         return usuarioRepository.listarRoles();
     }
 
-    public UsuarioDTO crear(UsuarioDTO dto, String usuarioApp) {
+    public UsuarioDTO crear(UsuarioDTO dto) {
+        String usuarioApp = Autorizacion.exigirAdmin().nombreUsuario();
+        validar(dto);
         if (usuarioRepository.existeNombreUsuario(dto.getNombreUsuario(), null)) {
             throw new NegocioException("Ya existe un usuario con ese nombre de usuario.");
         }
@@ -42,7 +46,9 @@ public class UsuarioService {
         return dto;
     }
 
-    public UsuarioDTO actualizar(int idUsuario, UsuarioDTO dto, String usuarioApp) {
+    public UsuarioDTO actualizar(int idUsuario, UsuarioDTO dto) {
+        String usuarioApp = Autorizacion.exigirAdmin().nombreUsuario();
+        validar(dto);
         if (usuarioRepository.existeNombreUsuario(dto.getNombreUsuario(), idUsuario)) {
             throw new NegocioException("Ya existe otro usuario con ese nombre de usuario.");
         }
@@ -53,5 +59,11 @@ public class UsuarioService {
         usuarioRepository.actualizar(dto, hash, usuarioApp);
         dto.setContrasena(null);
         return dto;
+    }
+
+    private void validar(UsuarioDTO dto) {
+        Validar.texto(dto.getNombreCompleto(), "El nombre completo es obligatorio.");
+        Validar.texto(dto.getNombreUsuario(), "El nombre de usuario es obligatorio.");
+        Validar.objeto(dto.getIdRol(), "El rol es obligatorio.");
     }
 }

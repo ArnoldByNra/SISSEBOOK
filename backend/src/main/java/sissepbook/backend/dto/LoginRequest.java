@@ -1,14 +1,11 @@
 package sissepbook.backend.dto;
 
-import jakarta.validation.constraints.NotBlank;
 
 /** Credenciales de inicio de sesión. */
 public class LoginRequest {
 
-    @NotBlank(message = "El usuario es obligatorio.")
     private String usuario;
 
-    @NotBlank(message = "La contraseña es obligatoria.")
     private String contrasena;
 
     public String getUsuario() { return usuario; }

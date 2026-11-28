@@ -1,6 +1,5 @@
 package sissepbook.backend.service;
 
-import org.springframework.stereotype.Service;
 import sissepbook.backend.dto.LibroDTO;
 import sissepbook.backend.exception.NegocioException;
 import sissepbook.backend.repository.LibroRepository;
@@ -18,10 +17,12 @@ public class LibroService {
     }
 
     public List<LibroDTO> listar(String filtro) {
+        Autorizacion.exigirSesion();
         return libroRepository.buscar(filtro);
     }
 
     public LibroDTO obtener(int idLibro) {
+        Autorizacion.exigirSesion();
         LibroDTO libro = libroRepository.buscarPorId(idLibro);
         if (libro == null) {
             throw new NegocioException("El libro no existe.");
@@ -29,7 +30,6 @@ public class LibroService {
         return libro;
     }
 
-    public LibroDTO crear(LibroDTO dto, String usuarioApp) {
         if (libroRepository.existeIsbn(dto.getIsbn(), null)) {
             throw new NegocioException("Ya existe un libro con ese ISBN.");
         }
@@ -37,7 +37,6 @@ public class LibroService {
         return libroRepository.buscarPorId(id);
     }
 
-    public LibroDTO actualizar(int idLibro, LibroDTO dto, String usuarioApp) {
         LibroDTO actual = obtener(idLibro);
         if (libroRepository.existeIsbn(dto.getIsbn(), idLibro)) {
             throw new NegocioException("Ya existe otro libro con ese ISBN.");
@@ -48,8 +47,16 @@ public class LibroService {
         return libroRepository.buscarPorId(idLibro);
     }
 
-    public void eliminar(int idLibro, String usuarioApp) {
         obtener(idLibro);
         libroRepository.eliminar(idLibro, usuarioApp);
+    }
+
+    private void validar(LibroDTO dto) {
+        Validar.texto(dto.getIsbn(), "El ISBN es obligatorio.");
+        Validar.texto(dto.getTitulo(), "El título es obligatorio.");
+        Validar.texto(dto.getAutor(), "El autor es obligatorio.");
+        Validar.texto(dto.getEditorial(), "La editorial es obligatoria.");
+        Validar.objeto(dto.getIdCategoria(), "La categoría es obligatoria.");
+        Validar.objeto(dto.getAnioPublicacion(), "El año de publicación es obligatorio.");
     }
 }

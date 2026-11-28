@@ -1,7 +1,6 @@
 package sissepbook.backend.repository;
 
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
@@ -11,7 +10,6 @@ import java.util.Map;
  * dentro de una misma conexión. La transacción real vive en el SP
  * (START TRANSACTION / COMMIT / ROLLBACK). Única capa que llama a los SP.
  */
-@Repository
 public class PrestamoRepository {
 
     private final JdbcTemplate jdbc;
@@ -39,6 +37,48 @@ public class PrestamoRepository {
                 cs.execute();
                 return cs.getInt(5);
             }
+        });
+    }
+
+    /** Resultado de registrar un préstamo con varios ejemplares. */
+    public record PrestamoMultiple(int idPrestamo, int totalEjemplares, java.time.LocalDateTime vencimiento) {
+    }
+
+    /**
+     * CALL sp_registrar_prestamo_multiple(codigosSeparadosPorComa, idLector, idUsuario, dias, OUT idPrestamo, OUT total)
+     * Un solo préstamo con todos los ejemplares, en una transacción (todo o nada).
+     */
+    public PrestamoMultiple registrarPrestamoMultiple(java.util.List<String> codigosBarras, int idLector,
+                                                      int idUsuario, int diasPlazo, String usuarioApp) {
+        String codigos = String.join(",", codigosBarras);
+        return jdbc.execute((org.springframework.jdbc.core.ConnectionCallback<PrestamoMultiple>) con -> {
+            try (var setUsuario = con.prepareStatement("SET @usuario_app = ?")) {
+                setUsuario.setString(1, usuarioApp);
+                setUsuario.execute();
+            }
+            int idPrestamo;
+            int total;
+            try (var cs = con.prepareCall("{CALL sp_registrar_prestamo_multiple(?, ?, ?, ?, ?, ?)}")) {
+                cs.setString(1, codigos);
+                cs.setInt(2, idLector);
+                cs.setInt(3, idUsuario);
+                cs.setInt(4, diasPlazo);
+                cs.registerOutParameter(5, java.sql.Types.INTEGER);
+                cs.registerOutParameter(6, java.sql.Types.INTEGER);
+                cs.execute();
+                idPrestamo = cs.getInt(5);
+                total = cs.getInt(6);
+            }
+            java.time.LocalDateTime vencimiento = null;
+            try (var ps = con.prepareStatement("SELECT fecha_vencimiento FROM prestamos WHERE id_prestamo = ?")) {
+                ps.setInt(1, idPrestamo);
+                try (var rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        vencimiento = rs.getTimestamp(1).toLocalDateTime();
+                    }
+                }
+            }
+            return new PrestamoMultiple(idPrestamo, total, vencimiento);
         });
     }
 

@@ -1,7 +1,6 @@
 package sissepbook.backend.repository;
 
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
 import sissepbook.backend.dto.UsuarioDTO;
 
 import java.util.List;
@@ -11,7 +10,6 @@ import java.util.Optional;
  * Acceso a datos de usuarios_sistema + roles.
  * Única capa que escribe SQL. Establece @usuario_app antes de escribir para la auditoría.
  */
-@Repository
 public class UsuarioRepository {
 
     private final JdbcTemplate jdbc;

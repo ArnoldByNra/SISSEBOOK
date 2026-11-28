@@ -1,13 +1,11 @@
 package sissepbook.backend.security;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Component;
 
 /**
  * Hashea contraseñas con BCrypt y verifica coincidencias.
  * NUNCA se guarda ni se imprime la contraseña en texto plano.
  */
-@Component
 public class PasswordService {
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();

@@ -1,14 +1,12 @@
 package sissepbook.backend.repository;
 
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
 import sissepbook.backend.dto.BitacoraDTO;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /** SELECT de bitacora_auditoria con filtros. Única capa que escribe SQL de bitácora. */
-@Repository
 public class BitacoraRepository {
 
     private final JdbcTemplate jdbc;

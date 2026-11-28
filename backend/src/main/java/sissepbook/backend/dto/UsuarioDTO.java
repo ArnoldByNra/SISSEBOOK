@@ -1,7 +1,5 @@
 package sissepbook.backend.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 /**
  * Usuario del sistema. La contraseña solo se envía al crear o cambiar;
@@ -11,15 +9,12 @@ public class UsuarioDTO {
 
     private Integer idUsuario;
 
-    @NotBlank(message = "El nombre completo es obligatorio.")
     private String nombreCompleto;
 
-    @NotBlank(message = "El nombre de usuario es obligatorio.")
     private String nombreUsuario;
 
     private String contrasena;
 
-    @NotNull(message = "El rol es obligatorio.")
     private Integer idRol;
 
     private String nombreRol;
